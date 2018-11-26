@@ -4,7 +4,6 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Payload;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,8 +24,7 @@ class PayloadDeserializer extends StdDeserializer<Payload> {
 
     @Override
     public Payload deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Map<String, JsonNode> tree = p.getCodec().readValue(p, new TypeReference<Map<String, JsonNode>>() {
-        });
+        Map<String, JsonNode> tree = DeserializerHelper.readMap(p);
         if (tree == null) {
             throw new JWTDecodeException("Parsing the Payload's JSON resulted on a Null map");
         }

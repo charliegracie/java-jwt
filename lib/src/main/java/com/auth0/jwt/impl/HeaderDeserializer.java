@@ -2,7 +2,6 @@ package com.auth0.jwt.impl;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -22,8 +21,7 @@ class HeaderDeserializer extends StdDeserializer<BasicHeader> {
 
     @Override
     public BasicHeader deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        Map<String, JsonNode> tree = p.getCodec().readValue(p, new TypeReference<Map<String, JsonNode>>() {
-        });
+        Map<String, JsonNode> tree = DeserializerHelper.readMap(p);
         if (tree == null) {
             throw new JWTDecodeException("Parsing the Header's JSON resulted on a Null map");
         }
